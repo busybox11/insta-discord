@@ -25,10 +25,15 @@ client.on('connected', () => {
 // Create an event listener for messages
 client.on('messageCreate', message => {
     // If the message is "ping"
-	console.log(message)
     if (message.content === 'ping') {
         // Reply "pong"
         message.reply('pong')
+    }
+
+    if (message.chatID === process.env.INSTA_CHAT_ID) {
+    	hook.setUsername(message.author.fullName)
+    	hook.setAvatar(message.author.avatarURL)
+    	hook.send(message.content);
     }
 })
 
