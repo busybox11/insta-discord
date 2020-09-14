@@ -7,6 +7,10 @@ dotenv.config();
 // Import the insta.js module
 const Insta = require('@androz2091/insta.js')
 
+// Import the Discord webhook module
+const { Webhook, MessageBuilder } = require('discord-webhook-node')
+const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
+
 // Create an instance of a Instagram client
 const client = new Insta.Client()
 
@@ -21,6 +25,7 @@ client.on('connected', () => {
 // Create an event listener for messages
 client.on('messageCreate', message => {
     // If the message is "ping"
+	console.log(message)
     if (message.content === 'ping') {
         // Reply "pong"
         message.reply('pong')
