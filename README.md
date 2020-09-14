@@ -8,3 +8,6 @@ Basic Instagram bot that sends messages from a chat to a Discord webhook
 	- `INSTA_PASSWD`: The bot's Instagram password
 	- `INSTA_CHAT_ID`: The Instagram Chat ID to follow (can get using web browser and DM URL) 
 	- `DISCORD_WRBHOOK_URL`: The Discord Webhook URL to use
+
+## TO-DO List
+- Send Discord messages from channel to Insta DM
