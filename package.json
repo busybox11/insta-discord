@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "@androz2091/insta.js": "^1.5.1",
-    "discord-webhook-node": "^1.1.8"
+    "discord-webhook-node": "^1.1.8",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {},
   "scripts": {
