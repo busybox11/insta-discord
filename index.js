@@ -14,10 +14,6 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 // Create an instance of a Instagram client
 const client = new Insta.Client()
 
-/**
- * The connected event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Instagram
- */
 client.on('connected', () => {
     console.log('[INSTA] Logged in')
 })
