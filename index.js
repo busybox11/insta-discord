@@ -47,6 +47,8 @@ dclient.on('message', msg => {
     if (msg.content === 'ping') {
         msg.reply('Pong!');
     }
+
+    console.log(msg)
 });
 
 // Login to Discord and Instagram
