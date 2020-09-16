@@ -4,22 +4,31 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Import the insta.js module
+// Import insta.js
 const Insta = require('@androz2091/insta.js')
+
+// Import discord.js
+const Discord = require('discord.js');
+const dclient = new Discord.Client();
 
 // Import the Discord webhook module
 const { Webhook, MessageBuilder } = require('discord-webhook-node')
 const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 
 // Create an instance of a Instagram client
-const client = new Insta.Client()
+const iclient = new Insta.Client()
 
-client.on('connected', () => {
+// When clients are ready
+dclient.on('connected', () => {
     console.log('[INSTA] Logged in')
 })
 
+iclient.on('ready', () => {
+    console.log(`[DISCORD] Logged in as ${dclient.user.tag}!`);
+});
+
 // Create an event listener for messages
-client.on('messageCreate', message => {
+iclient.on('messageCreate', message => {
     // If the message is "ping"
     if (message.content === 'ping') {
         // Reply "pong"
@@ -33,5 +42,13 @@ client.on('messageCreate', message => {
     }
 })
 
-// Log our bot in using Instagram credentials
-client.login(process.env.INSTA_USERNAME, process.env.INSTA_PASSWD)
+dclient.on('message', msg => {
+    // If the message is "ping"
+    if (msg.content === 'ping') {
+        msg.reply('Pong!');
+    }
+});
+
+// Login to Discord and Instagram
+iclient.login(process.env.INSTA_USERNAME, process.env.INSTA_PASSWD)
+dclient.login(process.env.DISCORD_BOT_TOKEN);
