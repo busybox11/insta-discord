@@ -19,7 +19,8 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 const iclient = new Insta.Client()
 
 // Initialize message cache
-let cache;
+let icache;
+let dcache;
 
 // When clients are ready
 iclient.on('connected', () => {
@@ -39,11 +40,12 @@ iclient.on('messageCreate', message => {
     }
 
     // If the message hasn't been sent using Discord
-    if (message.content !== cache) {
+    if (message.content !== icache) {
 	    if (message.chatID === process.env.INSTA_CHAT_ID) {
 	    	hook.setUsername(message.author.fullName)
 	    	hook.setAvatar(message.author.avatarURL)
 	    	hook.send(message.content)
+	    	dcache = message.content
 	    }
 	}
 })
@@ -55,12 +57,14 @@ dclient.on('message', msg => {
     }
 
     // If the message is in the selected channel
-    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
-    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
-			chat.sendMessage(`${msg.author.username} : ${msg.content}`);
-			cache = `${msg.author.username} : ${msg.content}`
-		})
-    }
+    if (msg.content !== dcache) {
+	    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
+	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
+				chat.sendMessage(`${msg.author.username} : ${msg.content}`);
+				icache = `${msg.author.username} : ${msg.content}`
+			})
+	    }
+	}
 })
 
 // Login to Discord and Instagram
