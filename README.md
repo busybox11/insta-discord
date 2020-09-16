@@ -2,6 +2,7 @@
 Basic Instagram bot that sends messages from a chat to a Discord webhook
 
 ## How to use
+- Install all dependencies (`npm i`)
 - Create a copy of `.env.example` to `.env` 
 - Edit the following values:
 	- `INSTA_USERNAME`: The bot's Instagram username
