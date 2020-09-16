@@ -24,7 +24,7 @@ iclient.on('connected', () => {
 })
 
 dclient.on('ready', () => {
-    console.log(`[DISCORD] Logged in as ${dclient.user.tag}!`)
+    console.log(`[DISCORD] Logged in as ${dclient.user.tag}`)
 })
 
 // Create an event listener for messages
@@ -50,7 +50,7 @@ dclient.on('message', msg => {
 
     if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
     	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
-			chat.send(`${msg.author.username} : ${msg.content}`);
+			chat.sendMessage(`${msg.author.username} : ${msg.content}`);
 		})
     }
 })
