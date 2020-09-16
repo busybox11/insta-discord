@@ -19,11 +19,11 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 const iclient = new Insta.Client()
 
 // When clients are ready
-dclient.on('connected', () => {
+iclient.on('connected', () => {
     console.log('[INSTA] Logged in')
 })
 
-iclient.on('ready', () => {
+dclient.on('ready', () => {
     console.log(`[DISCORD] Logged in as ${dclient.user.tag}!`)
 })
 
