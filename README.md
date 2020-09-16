@@ -17,3 +17,4 @@ Basic Instagram bot that sends messages from a chat to a Discord webhook
 - [X] Send Discord messages from channel to Insta DM
 - [ ] Use discord.js' built-in webhook methods
 - [ ] Automatic webhook creation
+- [ ] Use nicknames instead of global Discord name (configurable)
