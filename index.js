@@ -25,7 +25,7 @@ dclient.on('connected', () => {
 
 iclient.on('ready', () => {
     console.log(`[DISCORD] Logged in as ${dclient.user.tag}!`)
-});
+})
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
@@ -48,8 +48,12 @@ dclient.on('message', msg => {
         msg.reply('Pong!');
     }
 
-    console.log(msg)
-});
+    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
+    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
+			chat.send(`${msg.author.username} : ${msg.content}`);
+		})
+    }
+})
 
 // Login to Discord and Instagram
 iclient.login(process.env.INSTA_USERNAME, process.env.INSTA_PASSWD)
