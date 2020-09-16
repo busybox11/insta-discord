@@ -18,6 +18,9 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 // Create an instance of a Instagram client
 const iclient = new Insta.Client()
 
+// Initialize message cache
+let cache;
+
 // When clients are ready
 iclient.on('connected', () => {
     console.log('[INSTA] Logged in')
@@ -35,11 +38,13 @@ iclient.on('messageCreate', message => {
         message.reply('pong')
     }
 
-    if (message.chatID === process.env.INSTA_CHAT_ID) {
-    	hook.setUsername(message.author.fullName)
-    	hook.setAvatar(message.author.avatarURL)
-    	hook.send(message.content)
-    }
+    if (message.content !== cache) {
+	    if (message.chatID === process.env.INSTA_CHAT_ID) {
+	    	hook.setUsername(message.author.fullName)
+	    	hook.setAvatar(message.author.avatarURL)
+	    	hook.send(message.content)
+	    }
+	}
 })
 
 dclient.on('message', msg => {
@@ -51,6 +56,7 @@ dclient.on('message', msg => {
     if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
     	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
 			chat.sendMessage(`${msg.author.username} : ${msg.content}`);
+			cache = `${msg.author.username} : ${msg.content}`
 		})
     }
 })
