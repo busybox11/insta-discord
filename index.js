@@ -42,10 +42,15 @@ iclient.on('messageCreate', message => {
     // If the message hasn't been sent using Discord
     if (message.content !== icache) {
 	    if (message.chatID === process.env.INSTA_CHAT_ID) {
-	    	hook.setUsername(message.author.fullName)
-	    	hook.setAvatar(message.author.avatarURL)
-	    	hook.send(message.content)
-	    	dcache = message.content
+            hook.setUsername(message.author.fullName)
+            hook.setAvatar(message.author.avatarURL)
+            if (message.type == 'text') {
+                hook.send(message.content)
+                dcache = message.content;
+            } else if (message.type == 'voice_media') {
+                hook.send(message.voiceData.sourceURL);
+                dcache = message.voiceData.sourceURL;
+            }
 	    }
 	}
 })
@@ -60,8 +65,25 @@ dclient.on('message', msg => {
     if (msg.content !== dcache) {
 	    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
 	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
-				chat.sendMessage(`${msg.author.username} : ${msg.content}`);
-				icache = `${msg.author.username} : ${msg.content}`
+                if (msg.content != '') {
+                    chat.sendMessage(`${msg.author.username} : ${msg.content}`);
+                    icache = `${msg.author.username} : ${msg.content}`
+                }
+                for (const [key, value] of msg.attachments.entries()) {
+                    if (eval(`msg.attachments.get('${key}').height`) == null) {
+                        console.log(eval(`msg.attachments.get('${key}')`));
+                        let name = eval(`msg.attachments.get('${key}').name`);
+                        let url = eval(`msg.attachments.get('${key}').url`);
+                        let omessage = `Fichier envoyé par ${msg.author.username} : ${name}\n${url}`;
+                        chat.sendMessage(omessage);
+                        icache = omessage;
+                    } else {
+                        let omessage = `Image envoyée par ${msg.author.username} :`;
+                        chat.sendMessage(omessage);
+                        icache = omessage;
+                        chat.sendPhoto(eval(`msg.attachments.get('${key}').url`));
+                    }
+                }
 			})
 	    }
 	}
