@@ -34,6 +34,7 @@ dclient.on('ready', () => {
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
     // If the message is "ping"
+    message.chat.markMessageSeen(message.id)
     if (message.content === 'ping') {
         // Reply "pong"
         message.reply('pong')
