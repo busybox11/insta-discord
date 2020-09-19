@@ -71,7 +71,6 @@ dclient.on('message', msg => {
                 }
                 for (const [key, value] of msg.attachments.entries()) {
                     if (eval(`msg.attachments.get('${key}').height`) == null) {
-                        console.log(eval(`msg.attachments.get('${key}')`));
                         let name = eval(`msg.attachments.get('${key}').name`);
                         let url = eval(`msg.attachments.get('${key}').url`);
                         let omessage = `Fichier envoyé par ${msg.author.username} : ${name}\n${url}`;
