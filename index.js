@@ -58,6 +58,9 @@ iclient.on('messageCreate', message => {
             } else if (message.type == 'media') {
                 hook.send(message.mediaData.url);
                 dcache = message.mediaData.url;
+            } else if (message.type == 'like') {
+                hook.send(':heart:')
+                dcache = ':heart:'
             }
 	    }
 	}
