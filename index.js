@@ -33,7 +33,6 @@ dclient.on('ready', () => {
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
-    console.log(message)
     // If the message is "ping"
     message.markSeen()
     if (message.content === 'ping') {
