@@ -84,6 +84,7 @@ dclient.on('message', msg => {
                         nickm = result.nickname
                     }
                 })
+            
 	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
                 if (msg.content != '') {
                     chat.sendMessage(`${nickm} : ${msg.content}`);
