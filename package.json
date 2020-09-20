@@ -1,7 +1,7 @@
 {
   "name": "insta-discord",
   "version": "1.0.0",
-  "description": "",
+  "description": "An Instagram integration for Discord",
   "main": "index.js",
   "dependencies": {
     "@androz2091/insta.js": "^1.5.1",
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/busybox11/insta-discord.git"
   },
-  "author": "",
+  "author": "busybox",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/busybox11/insta-discord/issues"
