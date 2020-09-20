@@ -42,7 +42,7 @@ iclient.on('messageCreate', message => {
 
     // If the message hasn't been sent using Discord
     if (message.content !== icache) {
-	    if (message.chatID === process.env.INSTA_CHAT_ID) {
+	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
             hook.setUsername(message.author.fullName)
             hook.setAvatar(message.author.avatarURL)
             if (message.type == 'text') {
@@ -75,20 +75,29 @@ dclient.on('message', msg => {
     // If the message is in the selected channel
     if (msg.content !== dcache) {
 	    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
+            let nickm;
+            msg.channel.guild.members.fetch(msg.author.id)
+                .then(function(result) {
+                    if (result.nickname == null) {
+                        nickm = msg.author.username
+                    } else {
+                        nickm = result.nickname
+                    }
+                })
 	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
                 if (msg.content != '') {
-                    chat.sendMessage(`${msg.author.username} : ${msg.content}`);
-                    icache = `${msg.author.username} : ${msg.content}`
+                    chat.sendMessage(`${nickm} : ${msg.content}`);
+                    icache = `${nickm} : ${msg.content}`
                 }
                 for (const [key, value] of msg.attachments.entries()) {
                     if (eval(`msg.attachments.get('${key}').height`) == null) {
                         let name = eval(`msg.attachments.get('${key}').name`);
                         let url = eval(`msg.attachments.get('${key}').url`);
-                        let omessage = `Fichier envoyé par ${msg.author.username} : ${name}\n${url}`;
+                        let omessage = `Fichier envoyé par ${nickm} : ${name}\n${url}`;
                         chat.sendMessage(omessage);
                         icache = omessage;
                     } else {
-                        let omessage = `Image envoyée par ${msg.author.username} :`;
+                        let omessage = `Image envoyée par ${nickm} :`;
                         chat.sendMessage(omessage);
                         icache = omessage;
                         chat.sendPhoto(eval(`msg.attachments.get('${key}').url`));
