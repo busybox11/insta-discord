@@ -19,8 +19,8 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 const iclient = new Insta.Client()
 
 // Initialize message cache
-let icache;
-let dcache;
+let icache = null;
+let dcache = null;
 
 // When clients are ready
 iclient.on('connected', () => {
@@ -33,6 +33,7 @@ dclient.on('ready', () => {
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
+    console.log(message)
     // If the message is "ping"
     message.markSeen()
     if (message.content === 'ping') {
@@ -48,9 +49,16 @@ iclient.on('messageCreate', message => {
             if (message.type == 'text') {
                 hook.send(message.content)
                 dcache = message.content;
+            } else if (message.type == 'raven_media') {
+                let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
+                hook.send(mes)
+                dcache = mes
             } else if (message.type == 'voice_media') {
                 hook.send(message.voiceData.sourceURL);
                 dcache = message.voiceData.sourceURL;
+            } else if (message.type == 'media') {
+                hook.send(message.mediaData.url);
+                dcache = message.mediaData.url;
             }
 	    }
 	}
