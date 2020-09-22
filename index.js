@@ -33,6 +33,10 @@ dclient.on('ready', () => {
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
+    if (message.authorID == iclient.user.id) {
+        return
+    }
+
     // If the message is "ping"
     message.markSeen()
     if (message.content === 'ping') {
