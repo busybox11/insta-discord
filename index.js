@@ -67,6 +67,10 @@ iclient.on('messageCreate', message => {
 })
 
 dclient.on('message', msg => {
+    if (msg.author.id == dclient.user.id) {
+        return
+    }
+
     // If the message is "ping"
     if (msg.content === 'ping') {
         msg.reply('Pong!');
