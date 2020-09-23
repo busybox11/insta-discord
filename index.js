@@ -18,10 +18,6 @@ const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 // Create an instance of a Instagram client
 const iclient = new Insta.Client()
 
-// Initialize message cache
-let icache = null;
-let dcache = null;
-
 // When clients are ready
 iclient.on('connected', () => {
     console.log('[INSTA] Logged in')
@@ -43,30 +39,22 @@ iclient.on('messageCreate', message => {
         // Reply "pong"
         message.reply('pong')
     }
-
-    // If the message hasn't been sent using Discord
-    if (message.content !== icache) {
-	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
+	
+	if (message.chatID === process.env.INSTA_CHAT_ID) {            
             hook.setUsername(message.author.fullName)
             hook.setAvatar(message.author.avatarURL)
             if (message.type == 'text') {
                 hook.send(message.content)
-                dcache = message.content;
             } else if (message.type == 'raven_media') {
                 let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
                 hook.send(mes)
-                dcache = mes
             } else if (message.type == 'voice_media') {
                 hook.send(message.voiceData.sourceURL);
-                dcache = message.voiceData.sourceURL;
             } else if (message.type == 'media') {
                 hook.send(message.mediaData.url);
-                dcache = message.mediaData.url;
             } else if (message.type == 'like') {
                 hook.send(':heart:')
-                dcache = ':heart:'
             }
-	    }
 	}
 })
 
@@ -81,7 +69,6 @@ dclient.on('message', msg => {
     }
 
     // If the message is in the selected channel
-    if (msg.content !== dcache) {
 	    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
             let nickm;
             msg.channel.guild.members.fetch(msg.author.id)
@@ -96,7 +83,6 @@ dclient.on('message', msg => {
 	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
                 if (msg.content != '') {
                     chat.sendMessage(`${nickm} : ${msg.content}`);
-                    icache = `${nickm} : ${msg.content}`
                 }
                 for (const [key, value] of msg.attachments.entries()) {
                     if (eval(`msg.attachments.get('${key}').height`) == null) {
@@ -104,17 +90,14 @@ dclient.on('message', msg => {
                         let url = eval(`msg.attachments.get('${key}').url`);
                         let omessage = `Fichier envoyé par ${nickm} : ${name}\n${url}`;
                         chat.sendMessage(omessage);
-                        icache = omessage;
                     } else {
                         let omessage = `Image envoyée par ${nickm} :`;
                         chat.sendMessage(omessage);
-                        icache = omessage;
                         chat.sendPhoto(eval(`msg.attachments.get('${key}').url`));
                     }
                 }
-			})
+		})
 	    }
-	}
 })
 
 // Login to Discord and Instagram
