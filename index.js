@@ -29,22 +29,15 @@ dclient.on('ready', () => {
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
-    try {
-        if (message.authorID == iclient.user.id) {
-            return
-        }
-    } catch (err) {
-	return
-    }
-
     // If the message is "ping"
     message.markSeen()
     if (message.content === 'ping') {
         // Reply "pong"
         message.reply('pong')
     }
-	
-	if (message.chatID === process.env.INSTA_CHAT_ID) {            
+    
+    if (message.authorID != iclient.user.id && message.authorID != undefined) {
+	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
             hook.setUsername(message.author.fullName)
             hook.setAvatar(message.author.avatarURL)
             if (message.type == 'text') {
@@ -59,25 +52,19 @@ iclient.on('messageCreate', message => {
             } else if (message.type == 'like') {
                 hook.send(':heart:')
             }
-	}
+        }
+    }
 })
 
 dclient.on('message', msg => {
-    try {
-	if (msg.author.id == dclient.user.id) {
-	    return
-	}
-    } catch (err) {
-	return
-    }
-
     // If the message is "ping"
     if (msg.content === 'ping') {
         msg.reply('Pong!');
     }
 
     // If the message is in the selected channel
-	    if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
+    if (msg.author.id != dclient.user.id && msg.author.discriminator != '0000') {
+        if (msg.channel.id == process.env.DISCORD_CHANNEL_ID) {
             let nickm;
             msg.channel.guild.members.fetch(msg.author.id)
                 .then(function(result) {
@@ -86,9 +73,9 @@ dclient.on('message', msg => {
                     } else {
                         nickm = result.nickname
                     }
-                })
+            })
             
-	    	iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
+            iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
                 if (msg.content != '') {
                     chat.sendMessage(`${nickm} : ${msg.content}`);
                 }
@@ -104,8 +91,9 @@ dclient.on('message', msg => {
                         chat.sendPhoto(eval(`msg.attachments.get('${key}').url`));
                     }
                 }
-		})
-	    }
+            })
+        }
+    }
 })
 
 // Login to Discord and Instagram
