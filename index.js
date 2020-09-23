@@ -59,8 +59,12 @@ iclient.on('messageCreate', message => {
 })
 
 dclient.on('message', msg => {
-    if (msg.author.id == dclient.user.id) {
-        return
+    try {
+	if (msg.author.id == dclient.user.id) {
+	    return
+	}
+    } catch (err) {
+	return
     }
 
     // If the message is "ping"
