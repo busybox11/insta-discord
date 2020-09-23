@@ -29,8 +29,12 @@ dclient.on('ready', () => {
 
 // Create an event listener for messages
 iclient.on('messageCreate', message => {
-    if (message.authorID == iclient.user.id) {
-        return
+    try {
+        if (message.authorID == iclient.user.id) {
+            return
+        }
+    } catch (err) {
+	return
     }
 
     // If the message is "ping"
