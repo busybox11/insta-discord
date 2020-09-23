@@ -36,7 +36,7 @@ iclient.on('messageCreate', message => {
         message.reply('pong')
     }
     
-    if (message.authorID != iclient.user.id && message.authorID != undefined) {
+    if (message.authorID != iclient.user.id) {
 	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
             hook.setUsername(message.author.fullName)
             hook.setAvatar(message.author.avatarURL)
