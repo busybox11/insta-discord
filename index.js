@@ -37,21 +37,25 @@ iclient.on('messageCreate', message => {
     }
     
     if (message.authorID != iclient.user.id) {
-	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
-            hook.setUsername(message.author.fullName)
-            hook.setAvatar(message.author.avatarURL)
-            if (message.type == 'text') {
-                hook.send(message.content)
-            } else if (message.type == 'raven_media') {
-                let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
-                hook.send(mes)
-            } else if (message.type == 'voice_media') {
-                hook.send(message.voiceData.sourceURL);
-            } else if (message.type == 'media') {
-                hook.send(message.mediaData.url);
-            } else if (message.type == 'like') {
-                hook.send(':heart:')
-            }
+		if (message.chatID === process.env.INSTA_CHAT_ID) {
+			if (message.content == "!discord") {
+				message.chat.sendMessage(`Lien d'invitation vers le serveur Discord : ${process.env.DISCORD_INVITE_URL}`)
+			} else {
+				hook.setUsername(message.author.fullName)
+				hook.setAvatar(message.author.avatarURL)
+				if (message.type == 'text') {
+				hook.send(message.content)
+				} else if (message.type == 'raven_media') {
+				let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
+				hook.send(mes)
+				} else if (message.type == 'voice_media') {
+				hook.send(message.voiceData.sourceURL)
+				} else if (message.type == 'media') {
+				hook.send(message.mediaData.url);
+				} else if (message.type == 'like') {
+				hook.send(':heart:')
+				}
+			}
         }
     }
 })
