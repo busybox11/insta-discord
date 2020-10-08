@@ -17,8 +17,6 @@ const dclient = new Discord.Client()
 
 // Import the Discord webhook module
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-const { create } = require('domain');
-const { Stream } = require('stream');
 const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 
 // Create an instance of a Instagram client
@@ -43,7 +41,7 @@ iclient.on('messageCreate', message => {
     }
     
     if (message.authorID != iclient.user.id) {
-	    if (message.chatID === process.env.INSTA_CHAT_ID) {            
+	    if (message.chatID === process.env.INSTA_CHAT_ID) {
             hook.setUsername(message.author.fullName)
             hook.setAvatar(message.author.avatarURL)
             if (message.type == 'text') {
