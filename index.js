@@ -1,5 +1,9 @@
 'use strict'
 
+//Requires for Https and FileSystem
+const https = require('https')
+const fs = require('fs')
+
 // Require dotenv
 const dotenv = require('dotenv');
 dotenv.config()
@@ -12,7 +16,7 @@ const Discord = require('discord.js');
 const dclient = new Discord.Client()
 
 // Import the Discord webhook module
-const { Webhook, MessageBuilder } = require('discord-webhook-node')
+const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const hook = new Webhook(process.env.DISCORD_WEBHOOK_URL)
 
 // Create an instance of a Instagram client
@@ -37,25 +41,27 @@ iclient.on('messageCreate', message => {
     }
     
     if (message.authorID != iclient.user.id) {
-		if (message.chatID === process.env.INSTA_CHAT_ID) {
-			if (message.content == "!discord") {
-				message.chat.sendMessage(`Lien d'invitation vers le serveur Discord : ${process.env.DISCORD_INVITE_URL}`)
-			} else {
-				hook.setUsername(message.author.fullName)
-				hook.setAvatar(message.author.avatarURL)
-				if (message.type == 'text') {
-				hook.send(message.content)
-				} else if (message.type == 'raven_media') {
-				let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
-				hook.send(mes)
-				} else if (message.type == 'voice_media') {
-				hook.send(message.voiceData.sourceURL)
-				} else if (message.type == 'media') {
-				hook.send(message.mediaData.url);
-				} else if (message.type == 'like') {
-				hook.send(':heart:')
-				}
-			}
+	    if (message.chatID === process.env.INSTA_CHAT_ID) {
+            hook.setUsername(message.author.fullName)
+            hook.setAvatar(message.author.avatarURL)
+            if (message.type == 'text') {
+                hook.send(message.content)
+            } else if (message.type == 'raven_media') {
+                let mes = '*Contenu non supporté. Veuillez ouvrir l\'application Instagram pour y accéder.*'
+                hook.send(mes)
+            } else if (message.type == 'voice_media') {
+                var file = fs.createWriteStream("./vocal.mp3")
+                https.get(message.voiceData.sourceURL, (res) => {
+                    res.pipe(file)
+                    file.on('finish', () => {
+                        hook.sendFile("./vocal.mp3")
+                    })
+                })
+            } else if (message.type == 'media') {
+                hook.send(message.mediaData.url);
+            } else if (message.type == 'like') {
+                hook.send(':heart:')
+            }
         }
     }
 })
