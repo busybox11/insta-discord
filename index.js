@@ -87,7 +87,7 @@ dclient.on('message', msg => {
             
             iclient.fetchChat(process.env.INSTA_CHAT_ID).then((chat) => {
                 if (msg.content != '') {
-                    chat.sendMessage(`${nickm} : ${msg.content}`);
+                    chat.sendMessage(`(discord) ${nickm} : ${msg.content}`);
                 }
                 for (const [key, value] of msg.attachments.entries()) {
                     if (eval(`msg.attachments.get('${key}').height`) == null) {
