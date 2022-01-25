@@ -7,7 +7,7 @@
     "@androz2091/insta.js": "^1.5.2",
     "discord-webhook-node": "^1.1.8",
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^14.3.0"
   },
   "devDependencies": {},
   "scripts": {
